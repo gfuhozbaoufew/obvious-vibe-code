@@ -1,0 +1,21 @@
+{
+  "name": "rxp-reencrypt-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "tsx --env-file=.env src/deploy-commands.ts",
+    "start": "node main.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "discord.js": "^14.27.0",
+    "pako": "^2.2.0",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/pako": "^2.0.4",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Secrets: bot token and any other env files (the example has no values)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Guide files, backups and bot state (channel/message IDs); only the folder is kept
+guides/*
+!guides/.gitkeep
+
+# Guide exports dropped anywhere else, plus backups and temp files
+*.txt
+*.bak
+*.tmp
+
+# Logs (bot console output, npm errors)
+*.log
+logs/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
