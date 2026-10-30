@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "deploy": "tsx --env-file=.env src/deploy-commands.ts",
+    "deploy": "tsx src/deploy-commands.ts",
     "start": "node main.js",
     "typecheck": "tsc --noEmit"
   },
