@@ -6,6 +6,7 @@ import {
   SlashCommandBuilder,
   type ChatInputCommandInteraction,
 } from "discord.js";
+import { isBotOwner } from "./panel.js";
 import { decryptGuideFile, encryptForBattletag } from "./rxp-crypto.js";
 
 export const BATTLETAG_RE = /^.+#\d+$/;
@@ -13,7 +14,7 @@ export const MAX_FILE_BYTES = 25 * 1024 * 1024;
 
 export const reencryptCommand = new SlashCommandBuilder()
   .setName("reencrypt")
-  .setDescription("Re-encrypt a RestedXP guide export for another BattleTag")
+  .setDescription("Re-encrypt a RestedXP guide export for another BattleTag (bot owner only)")
   .addAttachmentOption((o) =>
     o
       .setName("file")
@@ -33,7 +34,7 @@ export const reencryptCommand = new SlashCommandBuilder()
         "BattleTag the file was exported with (read from the file name if omitted)",
       ),
   )
-  // Hidden from non-admins in the command list; checked again in the handler.
+  // Hidden from non-admins in the command list; the owner check is the real gate.
   .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
   .setContexts(InteractionContextType.Guild);
 
@@ -44,11 +45,9 @@ function tagFromFileName(name: string): string | null {
 }
 
 export async function handleReencrypt(interaction: ChatInputCommandInteraction) {
-  // Server admins can re-enable the command for others in Integrations settings,
-  // so the permission is enforced here too.
-  if (!interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)) {
+  if (!(await isBotOwner(interaction))) {
     return interaction.reply({
-      content: "Only server admins can use this command.",
+      content: "Only the bot owner can use this command.",
       flags: MessageFlags.Ephemeral,
     });
   }

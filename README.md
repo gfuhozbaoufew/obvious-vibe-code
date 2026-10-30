@@ -14,14 +14,13 @@ re-encrypts RestedXP guide exports for another BattleTag.
 |---|---|---|
 | `/init-rxp` | Bot owner | Posts the guide panel in the channel |
 | `/update-guide` | Bot owner | Replaces a bundled guide with a new export |
-| `/reencrypt` | Server admins | Re-encrypts any RestedXP export |
+| `/reencrypt` | Bot owner | Re-encrypts any RestedXP export |
 | `/guide` | Everyone | Sends a bundled guide for your BattleTag |
 
 "Bot owner" is the owner of the application in the Discord Developer Portal (or
-any member of its team). "Server admins" are members with the Administrator
-permission. The owner and admin commands are hidden from members without
-Administrator, and checked again when they run: other admins can see the owner
-commands but get "Only the bot owner can use this command."
+any member of its team). The owner commands are hidden from members without
+Administrator, and checked again when they run: server admins can see them but
+get "Only the bot owner can use this command."
 
 Every reply that contains a BattleTag or a guide file is ephemeral: only the
 person who used the command sees it.
@@ -123,13 +122,11 @@ cp .env.example .env
 | Variable | Required | Description |
 |---|---|---|
 | `DISCORD_TOKEN` | yes | Bot token |
-| `CLIENT_ID` | for `npm run deploy` | Application ID |
+| `CLIENT_ID` | to register commands | Application ID |
 | `GUILD_ID` | no | Register commands in this server only (shows up instantly) instead of globally |
 | `GUIDES_PATH` | no | Folder with the guide files (default: `guides/`) |
 
-For `npm start` / `main.js`, `.env` is optional when the host sets these as
-environment variables instead. `npm run deploy` always reads `.env`, so run it
-where you have one (e.g. your own PC).
+`.env` is optional when the host sets these as environment variables instead.
 
 ### 4. Add the guide files
 
@@ -149,17 +146,17 @@ For the guides that aren't in the public repo, or to start with an empty folder,
 upload each guide from Discord with `/update-guide`. Until a guide exists, the
 bot replies that it isn't available yet.
 
-### 5. Install, register commands and run
+### 5. Install and run
 
 ```sh
 npm install
-npm run deploy   # register the slash commands
 npm start        # runs node main.js
 ```
 
-Run `npm run deploy` once, and again whenever a command or its options change.
-Changes to what a command does only need a restart. Global commands can take a
-few minutes to show up; press Ctrl+R in Discord to reload.
+`main.js` registers the slash commands on every start, so a restart is all a
+command change needs. If registering fails, the error is logged and the bot
+starts anyway. `npm run deploy` registers them without starting the bot. Global
+commands can take a few minutes to show up; press Ctrl+R in Discord to reload.
 
 If you register with `GUILD_ID` after registering globally, the commands show up
 twice in that server. Use one or the other.
@@ -167,8 +164,9 @@ twice in that server. Use one or the other.
 ## Hosting
 
 - **Node.js 20.12 or newer.**
-- Hosts that ask for a **main file**: use `main.js`. It loads `.env` if present
-  and runs the TypeScript source through `tsx`, so no build step is needed.
+- Hosts that ask for a **main file**: use `main.js`. It loads `.env` if present,
+  registers the slash commands and runs the TypeScript source through `tsx`, so
+  no build step or separate deploy is needed.
 - Run `npm install` **on the server**. Don't copy `node_modules` from another
   OS: `tsx` depends on `esbuild`, which installs a platform-specific binary.
 - The bot needs write access to `guides/` (for `/update-guide` and
@@ -204,7 +202,7 @@ npm run typecheck
 | `src/update.ts` | `/update-guide` |
 | `src/state.ts` | `state.json` load and save |
 | `src/rxp-crypto.ts` | RestedXP encryption |
-| `src/deploy-commands.ts` | Registers the slash commands |
+| `src/deploy-commands.ts` | Registers the slash commands (run by `main.js` and `npm run deploy`) |
 
 `src/rxp-crypto.ts` is copied from
 [restedxp-reencrypt](https://github.com/mkccl/restedxp-reencrypt)'s
