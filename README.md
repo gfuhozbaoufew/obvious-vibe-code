@@ -15,6 +15,7 @@ re-encrypts RestedXP guide exports for another BattleTag.
 | `/init-rxp` | Bot owner | Posts the guide panel in the channel |
 | `/update-guide` | Bot owner | Replaces a bundled guide with a new export |
 | `/reencrypt` | Bot owner | Re-encrypts any RestedXP export |
+| `/ping` | Bot owner | Replies `running` if the bot is up |
 | `/guide` | Everyone | Sends a bundled guide for your BattleTag |
 
 "Bot owner" is the owner of the application in the Discord Developer Portal (or
@@ -69,6 +70,10 @@ The new guide is served right away; no restart is needed.
 
 Replies with the new `.txt` file after checking that it decrypts to exactly the
 same guides. Nothing is stored.
+
+### `/ping`
+
+Replies `running` (only you see it). Use it to check that the bot is online.
 
 ### `/guide`
 
@@ -200,6 +205,7 @@ npm run typecheck
 | `src/guides.ts` | Guide list, `/guide`, guide file access |
 | `src/panel.ts` | `/init-rxp`, panel, button and form, panel refresh |
 | `src/update.ts` | `/update-guide` |
+| `src/ping.ts` | `/ping` |
 | `src/state.ts` | `state.json` load and save |
 | `src/rxp-crypto.ts` | RestedXP encryption |
 | `src/deploy-commands.ts` | Registers the slash commands (run by `main.js` and `npm run deploy`) |

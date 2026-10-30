@@ -2,6 +2,7 @@ import { REST, Routes } from "discord.js";
 import { reencryptCommand } from "./command.js";
 import { guideCommand } from "./guides.js";
 import { initCommand } from "./panel.js";
+import { pingCommand } from "./ping.js";
 import { updateCommand } from "./update.js";
 
 // Load .env if present; panel environment variables work too.
@@ -15,7 +16,7 @@ if (!DISCORD_TOKEN || !CLIENT_ID) {
 }
 
 const rest = new REST().setToken(DISCORD_TOKEN);
-const commands = [reencryptCommand, guideCommand, initCommand, updateCommand];
+const commands = [reencryptCommand, guideCommand, initCommand, updateCommand, pingCommand];
 const body = commands.map((c) => c.toJSON());
 
 // Guild commands update instantly; global ones can take up to an hour.

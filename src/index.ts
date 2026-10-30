@@ -15,6 +15,7 @@ import {
   initCommand,
   openGuideForm,
 } from "./panel.js";
+import { handlePing, pingCommand } from "./ping.js";
 import { handleUpdate, updateCommand } from "./update.js";
 
 const handlers: Record<string, (i: ChatInputCommandInteraction) => Promise<unknown>> = {
@@ -22,6 +23,7 @@ const handlers: Record<string, (i: ChatInputCommandInteraction) => Promise<unkno
   [guideCommand.name]: handleGuide,
   [initCommand.name]: handleInit,
   [updateCommand.name]: handleUpdate,
+  [pingCommand.name]: handlePing,
 };
 
 const token = process.env.DISCORD_TOKEN;
